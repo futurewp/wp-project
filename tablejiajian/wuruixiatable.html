@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表单</title>
+</head>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	main{
+		width: 600px;
+		height: auto;
+		border: 1px solid #666;
+		margin: 20px auto;
+	}
+	h3{
+		font-size: 18px;
+		color: #000;
+		text-align: center;
+		line-height: 40px;
+	}
+	table{
+		width: 100%;
+		height: auto;
+		text-align: center;
+       font-weight: normal;
+       border-collapse: collapse;
+
+	}
+    tr{
+    	width: 100px;
+    	font-size: 14px;
+    	color: #000;
+    	/* padding: 10px 0; */
+    	line-height: 40px;
+    	border: none;
+    }
+   tr:nth-of-type(2n){
+   	background: #ddd;
+   }
+   td{
+   	padding: 10px 0;
+   }
+   button{
+   	font-size: 14px;
+   	background: #83d6dd;
+   	border-radius: 5px;
+   	color: #fff;
+   	padding: 10px  10px;
+   	outline: none;
+   	border: none;
+
+   }
+  #add{
+  	float: right;
+  	margin-right: 27px;
+  	margin-top: 10px;
+  	margin-bottom: 10px;
+  }
+</style>
+<body>
+	<main>
+		<h3>学生信息表</h3>
+		<table>
+    <thead>
+    <tr>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>电话</th>
+        <th>籍贯</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+			<tbody></tbody>
+			
+		</table>
+		<button id="add">添加</button>
+		<div style="clear:both;"></div>
+	</main>
+</body>
+<script>
+ 
+   
+  //属性
+       //存储
+  //方法
+     //增  删  改  查 
+  // 
+	class storage{
+		constructor(){
+          this.data=[];
+		}
+    //初始化
+		init(){
+         let student=[
+   {name:'张三',sex:'男',age:'23',call:'13612567788',adress:'山西太原'},
+   {name:'李四',sex:'男',age:'18',call:'13612566688',adress:'山西太原'},
+   {name:'王五',sex:'女',age:'28',call:'13612563399',adress:'山西太原'},
+   {name:'赵六',sex:'男',age:'29',call:'13612562233',adress:'山西太原'},
+   {name:'小丽',sex:'女',age:'21',call:'13612566688',adress:'山西太原'},
+   {name:'小燕',sex:'女',age:'24',call:'13612564455',adress:'山西太原'}
+   ];
+    localStorage.setItem('student',JSON.stringify(student)) ; 
+		}
+    //获取
+		getdata(){
+           let data=localStorage.getItem('student');
+           if(!data){
+           	this.init();
+           }
+          return this.data=JSON.parse(localStorage.getItem('student'));
+		}
+		add(obj){
+         this.data.push(obj);
+         this.save();
+		}
+		del(index){
+      this.data.splice(index,1);
+      this.save();
+      
+		}
+    //修改  更新
+		update(row,type,value){
+       this.data[row][type]=value ;
+       console.log(this.data)
+       this.save();
+		}
+    save(){
+      localStorage.student=JSON.stringify(this.data)
+    }
+	}
+</script>
+<script>
+    //构造对象
+    //调用getdata
+    //查询
+    //更新
+    //update    第几行  第几个  value
+	window.onload=function(){
+   let table=document.querySelector('tbody') ;
+   // let arr=[
+   // {name:'张三',sex:'男',age:'23',call:'13612567788',adress:'山西太原'},
+   // {name:'李四',sex:'男',age:'18',call:'13612566688',adress:'山西太原'},
+   // {name:'王五',sex:'女',age:'28',call:'13612563399',adress:'山西太原'},
+   // {name:'赵六',sex:'男',age:'29',call:'13612562233',adress:'山西太原'},
+   // {name:'小丽',sex:'女',age:'21',call:'13612566688',adress:'山西太原'},
+   // {name:'小燕',sex:'女',age:'24',call:'13612564455',adress:'山西太原'}
+   // ];
+
+   let dataobj=new storage();
+   load();
+   function load(){
+     let student=dataobj.getdata();
+     
+   console.log( dataobj.getdata())
+   student.forEach((element,index)=>{
+       ceartadd(element,index);
+   })
+   }
+  
+   function ceartadd(obj,i){
+
+        let trs=document.createElement('tr');
+        trs.id=i;
+        trs.innerHTML=`
+        <td type="name">${obj.name}</td>
+				<td type="sex">${obj.sex}</td>
+				<td type="age">${obj.age}</td>
+				<td type="call">${obj.call}</td>
+				<td type="adress">${obj.adress}</td>
+				<td class="del"><button>删除</button></td>
+        `;
+        table.appendChild(trs);
+   }
+
+// td  保存   清空     创建input   传值    插入
+// 更新     保存input的值     input删除      值给td
+// 删除   element->tr  父元素+父元素    removeChild
+// 添加   tr
+    
+        table.ondblclick=function(e){
+
+        	let element=e.target;
+        	if(element.nodeName=='TD'&&element.className!='del'){
+        	let old=element.innerText;
+        	let inputs=document.createElement('input');
+        	element.innerText='';
+        	inputs.value=old;
+        	element.appendChild(inputs);
+        	inputs.onblur=function(){
+        		let neww = this.value.trim();
+        		element.removeChild(inputs);
+        		inputs.innerText='';
+        		
+            if(!neww){
+              neww=old;
+            }
+            element.innerText=neww;
+            let row=element.parentNode.id;
+            let type=element.getAttribute('type');
+            dataobj.update(row,type,neww);
+        	}
+        }else if(element.nodeName=='BUTTON'){
+            let str=element.parentNode.parentNode;
+            table.removeChild(str);
+            let index=element.parentNode.parentNode.id;
+            dataobj.del(index);
+            table.innerHTML=''
+            load();
+        }   
+
+	}
+	   
+          let ad=document.querySelector('#add');
+	        ad.ondblclick=function(){
+            let obj={name:'张三',sex:'男',age:'23',call:'13612567788',adress:'山西太原'}
+             ceartadd(obj,table.childElementCount )
+             dataobj.add(obj)
+           
+  
+
+        }
+}
+</script>
+</html>

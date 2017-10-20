@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+       .head,.flooter{
+       	width: 1226px;
+       	height: 300px;
+       	background: #008ed0;
+       	margin: 0 auto;
+       	font-size: 40px;
+       	color: #ffff;
+       	text-align: center;
+       	line-height: 300px;
+       }
+       .floor{
+       	display: block;
+       	width: 1226px;
+       	height: 500px;
+       	background: #fff;
+       	border: 2px solid #008ed0;
+       	margin: 20px auto;
+       	display: flex;
+       	flex-wrap: wrap;
+       	justify-content: space-between;
+       }
+
+       .floor img{
+       	width: 200px;
+       	height: 200px;
+       }
+       aside{
+       	width: 40px;
+       	height: 280px;
+       	position: fixed;
+       	top: 0;
+       	bottom: 0;
+       	margin-bottom: auto;
+       	margin-top: auto;
+       	left: 0;
+       	z-index: 999;
+       }
+       aside > button{
+       	width: 40px;
+       	height: 40px;
+       	background: #fff;
+       	border: 1px solid #008ed0;
+       	font-size: 30px;
+       	color: #000;
+       }
+       .search{
+       	width: 100%;
+       	height: 50px;
+       	background: yellow;
+       	position: fixed;
+       	top: -50px;
+       	/* display: none; */
+       }
+	</style>
+</head>
+<body>
+<div class="search">搜索</div>	
+    <aside>
+    	<button>1</button>
+    	<button>2</button>
+    	<button>3</button>
+    	<button>4</button>
+    	<button>5</button>
+    </aside>
+    <div class="head">头部</div>
+	<div class="floor">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+	</div>
+	<div class="floor">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+	</div>
+	<div class="floor">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+	</div>
+	<div class="floor">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+	</div>
+	<div class="floor">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+		<img src="" alt="" imgpath="nn1.png">
+	</div>
+    <div class="flooter">底部</div>
+</body>
+</html>
+<script src="animate.js"></script>
+<script>
+window.onload = function(){
+let search=document.querySelector('.search');
+    let aside=document.querySelectorAll('aside>button');
+	let ch=innerHeight;
+	let floor=document.querySelectorAll('.floor');
+	let floorArr=[];
+	let color = ['red','pink','yellow','skyblue','gold']
+	floor.forEach(element=>{
+		floorArr.push(element.offsetTop)
+	})
+	let scrolltop=document.documentElement.scrollTop;
+	console.log(aside);
+	let flag=true;
+	window.onscroll = function(){
+		if(!flag){
+			return;
+		}
+let flag1=true;
+if(scrolltop>=500){
+	if(flag1){
+		flag1=!flag1;
+		animate(search,{top:0});
+		console.log(1)
+	}
+}else{
+	if(flag1){
+		flag1=!flag1;
+		animate(search,{top:-50});
+	}
+}
+
+	    // console.log(document.documentElement.scrollTop)
+	    // console.log(document.body.scrollTop)
+	    
+	    floorArr.forEach((value,index)=>{
+	    	if(scrolltop+ch>=value+200){
+
+				for(let i=0;i<aside.length;i++){
+					aside[i].style.background='#fff';
+		        }
+		        aside[index].style.background=color[index];
+
+	    		//index
+	    		let imgs=floor[index].getElementsByTagName('img');
+	    		// console.log(imgs)
+	    		for(let i=0;i<imgs.length;i++){
+	    			imgs[i].src = imgs[i].getAttribute('imgpath');
+	    		}
+	    	}
+	    })
+
+
+
+
+
+
+}
+
+
+
+
+aside.forEach((element,index)=>{
+	element.onclick=function(){
+		for(let i=0;i<aside.length;i++){
+			aside[i].style.background='#fff';
+        }
+           element.style.background=color[index];
+		
+         flag=false;
+	   // document.documentElement.scrollTop=floorArr[index];
+	    animate(document.documentElement,{scrollTop:floorArr[index]},function(){
+	    	flag=true;
+	    })
+	}
+})
+
+
+
+}
+</script>
