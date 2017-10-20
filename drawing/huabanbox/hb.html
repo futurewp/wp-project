@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>palette  画板</title>
+	<link rel="stylesheet" href="iconfont/iconfont.css">
+</head>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	html,body{
+		width: 100%;
+		height: 100%;
+	}
+	body{
+		overflow: hidden;
+		background: #fff;
+	}
+	main{
+       /* position: absolute; */
+       width: 100%;
+       height: 100%;
+       display: flex;
+	}
+	ul.tools{
+		width: 142px;
+		height: 100%;
+		background: #008ed0;
+		border-right: 2px solid #ccc;
+		padding: 10px 10px;
+		box-sizing: border-box;
+/* 		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between; */
+
+	}
+	ul.tools>li{
+        width: 35px;
+        height: 35px;
+        margin: 5px 10px;
+        border: 1px dashed #fff;
+        box-sizing: border-box;
+        display: inline-block;
+        font-size: 22px;
+        color: #fff;
+        line-height: 35px;
+        text-align: center;
+	}
+	ul.tools>li>a{
+		display: block;
+		width: 100%;
+		height: 100%;
+        font-size: 22px;
+        color: #fff;
+        line-height: 35px;
+        text-align: center;
+	}
+	ul>li[active=true]{
+		border: 1px solid red;
+	}
+	ul.tools>div.flag{
+		height: 1px;
+		background: #fff;
+		margin: 10px 0;
+	}
+	div.right{
+		flex-grow: 1;
+		height: 100%;
+		background: red;
+	}
+/* 	div.top{
+		width: 100%;
+		height: 120px;
+		border-bottom: 2px solid #ccc;
+
+	}
+ */	div.bottom{
+		width: 100%;
+		/* calc---计算 */
+		/* height: calc(100% - 122px); */
+		height: 100%;
+		background: #fff;
+		position: relative;
+
+	}
+	canvas{
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+	}
+	div.zh{
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+		box-shadow:0px 0px 5px 5px rgba(0,0,0,0.2) inset;
+	}
+	div.ears{
+        position: absolute;
+        left: -30px;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        background: #ccc;
+        display: none;
+	}
+	#colorf>input,#colors>input{
+        width: 30px;
+        height: 30px;
+        border: none;
+	}
+	div.clipobj{
+        position: absolute;
+        left: 0px;
+        top: 0;
+        border: 2px dashed #666;
+        width: 100px;
+        height: 100px;
+        display: none;
+	}
+</style>
+<body>
+	<main>
+		<ul class="tools">
+			<li id="newFile" class="iconfont icon-xinjian" title="新建"></li>
+			<li><a href="" id="save" class="iconfont icon-baocun" title="保存"></a></li>
+			<li id="clearAll" class="iconfont icon-qingkong" title="清空"></li>
+			<li id="reverse" class="iconfont icon-fanxiang" title="反向"></li>
+			<li id="back" class="iconfont icon-chexiao"  title="撤销"></li>
+			<li id="linew" class="iconfont icon-xiantiaokuandu"  title="线宽"></li>
+			<li id="f-size" class="iconfont icon-bianjizitidaxiao"  title="文本字体大小"></li>
+			<div class="flag"></div>
+			<li id="line" class="iconfont icon-xian- tool" active="true"  title="直线"></li>
+			<li id="dash" class="iconfont icon-xuxian tool" title="虚线"></li>
+			<li id="pencil" class="iconfont icon-huaxian tool" title="铅笔"></li>
+			<li id="rect" class="iconfont icon-juxing tool" title="圆形"></li>
+			<li id="circle" class="iconfont icon-yuan tool" title="矩形"></li>
+			<li id="poly" class="iconfont icon-duobianxing tool" title="多边形"></li>
+			<li id="polyj" class="iconfont icon-duobianxing1 tool" title="多角形"></li>
+			<div class="flag"></div>
+			<li id="styles" class="iconfont icon-miaobian" title="描边"></li>
+			<li id="colors">
+				<input type="color" name="color" placeholder=""  title="描边颜色">
+			</li>
+			<li id="stylef" class="iconfont icon-tianchong" title="填充"></li>
+			<li id="colorf">
+				<input type="color" name="color" placeholder="" title="填充颜色">
+			</li>
+			<div class="flag"></div>
+			<li id="xp" class="iconfont icon-xiangpi" title="橡皮"></li>
+			<li id="font" class="iconfont icon-wenben-copy" title="文本"></li>
+			<li id="clip" class="iconfont icon-caijian" title="剪切"></li>
+		</ul>
+		<div class="right">
+<!-- 			<div class="top"></div> -->
+			<div class="bottom">
+				<canvas width="800" height="400"></canvas>
+				<div class="zh"></div>
+				<div class="ears"></div>
+				<div class="clipobj"></div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>
+<script src="hb.js"></script>
+<script>
+	window.onload=function(){
+		let bottom=document.querySelector('.bottom');
+		let bw=parseInt(getComputedStyle(bottom,null).width);
+		let bh=parseInt(getComputedStyle(bottom,null).height);
+		console.log(bw)
+		console.log(bh)
+
+		let canvas=document.querySelector('canvas');
+		let zh=document.querySelector('.zh');
+		let ears=document.querySelector('.ears');
+		let clipobj=document.querySelector('.clipobj');
+		let ctx=canvas.getContext("2d");
+		canvas.width = bw;  
+        canvas.height = bh; 
+		
+		let pal=new palette(canvas,ctx,zh);
+		// let line=document.querySelector('#line');
+		// line.onclick=function(){
+		//   pal.draw('line');
+		// }
+		
+		// let dash=document.querySelector('#dash');
+		// dash.onclick=function(){
+		//   pal.draw('dash');
+		// }
+		
+		// // let rect=document.querySelector('#rect');
+		// // rect.onclick=function(){
+		  
+		// // }
+
+		// let circle=document.querySelector('#circle');
+		// circle.onclick=function(){
+		//   pal.draw('circle');
+		// }
+
+		// let poly=document.querySelector('#poly');
+		// poly.onclick=function(){
+		//   let num=prompt('请输入边数',5);
+		//   pal.draw('poly',num);
+		// }
+
+		// let polyj=document.querySelector('#polyj');
+		// polyj.onclick=function(){
+		//   let num=prompt('请输入边数',5);
+		//   pal.draw('polyj',num);
+		// }
+
+		
+		// let pencil=document.querySelector('#pencil');
+		// pencil.onclick=function(){
+		//   pal.pencil()
+		// }
+
+
+
+
+
+        let toolS=document.querySelectorAll('.tool');
+        toolS.forEach(element=>{
+        	element.onclick=function(){
+	        	let num = 0;
+	        	document.querySelector('li[active=true]').setAttribute('active',false);
+	        	this.setAttribute('active',true);
+
+	        	if(this.id=='pencil'){
+	        		pal.pencil();
+	        		return;
+	        	}
+
+        	
+        		if( this.id=='poly' || this.id=='polyj' ){
+				    num=prompt('请输入边数',5);
+        		}
+        		pal.draw(this.id,num);
+        	}
+        })
+        ///////////方法的调用   用来让 当首次line时不用点击就能触发
+        toolS[0].onclick();  ////相当于 pal.draw('line');  在遍历前先调用一次
+
+		let xp=document.querySelector('#xp');
+		xp.onclick=function(){
+		  // ears.style.background=`#ccc`;
+	      document.querySelector('li[active=true]').setAttribute('active',false);
+	      this.setAttribute('active',true);
+		  let widths=prompt('请输入橡皮檫边长',30);
+		  pal.earser(ears,widths,widths)
+		}
+ 
+
+        let cf=document.querySelector('#colorf>input')
+        let cs=document.querySelector('#colors>input')
+		let styles=document.querySelector('#styles');
+		let stylef=document.querySelector('#stylef');
+
+		styles.onclick=function(){
+	      document.querySelector('li[active=true]').setAttribute('active',false);
+	      this.setAttribute('active',true);
+			pal.style='stroke'
+			pal.text='strokeText'
+		}
+		cs.onclick=function(){
+			cs.onblur=function(){
+				pal.strokeStyle=cs.value;
+			}
+		}
+
+		stylef.onclick=function(){
+	      document.querySelector('li[active=true]').setAttribute('active',false);
+	      this.setAttribute('active',true);
+			pal.style='fill'
+			pal.text='fillText'
+		}
+		cf.onclick=function(){
+			cf.onblur=function(){
+				pal.fillStyle=cf.value;
+			}
+		}
+
+		let font=document.querySelector('#font');
+		font.onclick=function(){
+	      document.querySelector('li[active=true]').setAttribute('active',false);
+	      this.setAttribute('active',true);
+		  pal.font()
+		}
+		
+		let clip=document.querySelector('#clip');
+		clip.onclick=function(){
+	      document.querySelector('li[active=true]').setAttribute('active',false);
+	      this.setAttribute('active',true);
+		  pal.clip(clipobj)
+		}
+
+        let save=document.querySelector('#save');
+        let sa=document.querySelector('#sa');
+        console.log(save)
+        save.onclick=function(){
+	        document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.parentNode.setAttribute('active',true);
+        	let data=canvas.toDataURL('image/png');
+        	save.href=data;
+        	save.download='tu.png';
+        }
+        
+        let clearAll=document.querySelector('#clearAll');
+        clearAll.onclick=function(){
+	        document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.setAttribute('active',true);
+            pal.clearAll();
+        }
+
+        let newFile=document.querySelector('#newFile');
+        newFile.onclick=function(){
+
+        	let flag=confirm('是否保存');
+        	// if(flag){
+        	// 	save.onclick();
+        	// }
+        	// clearAll.onclick();
+            location.href=canvas.toDataURL('image/png').replace('image/png','image/octet-stream')///只能用画图软件打开
+        	document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.setAttribute('active',true);
+        }
+        // 反向
+        let reverse=document.querySelector('#reverse');
+        reverse.onclick=function(){
+	        document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.setAttribute('active',true);
+        	pal.reverse();
+        }
+
+        let back=document.querySelector('#back');
+        back.onclick=function(){
+	        document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.setAttribute('active',true);
+        	pal.back();
+        }
+
+        let linew=document.querySelector('#linew');
+        linew.onclick=function(){
+	        document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.setAttribute('active',true);
+	        let n=prompt('请输入线条宽度',1);
+        	pal.lineWidth=n;
+        }
+
+        let fSize=document.querySelector('#f-size');
+        fSize.onclick=function(){
+	        document.querySelector('li[active=true]').setAttribute('active',false);
+	        this.setAttribute('active',true);
+	        let n=prompt('文本字体大小',12);
+        	pal.size=n;
+        }
+	}
+</script>

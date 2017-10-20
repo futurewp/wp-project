@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>循环(九九乘法表+金字塔)</title>
+</head>
+<body>
+	<script>
+	// // // 9*9表格
+		document.write('<table border="1px" cellspacing="0" cellpadding="15px" width="80%" align="center">')
+		   for(var i=1;i<=9;i++){
+		   document.write('<tr>')
+		     for(var j=1;j<=9;j++){
+		      document.write('<td align="center">'+i+'-'+j+'</td>')
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')
+		   }
+		document.write('</table>')
+	// 九九乘法表
+		document.write('<table border="1px" cellspacing="0" cellpadding="15px" width="80%" align="center">')
+		   for(var A=1;A<=9;A++){
+		   document.write('<tr>')
+		     for(var B=1;B<=A;B++){
+		      document.write('<td align="center">'+B+'*'+A+'='+A*B
+		      	+'</td>')
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')
+		   }
+		document.write('</table>')
+	// // 九九乘法表+隔行换色
+		document.write('<table border="1px" cellspacing="0" cellpadding="15px" width="80%" align="center">')
+		for(var C=1;C<=9;C++){
+		   if(C%2===1){
+		   document.write('<tr bgcolor="red">')
+		     for(var D=1;D<=C;D++){
+		      document.write('<td align="center">'+D+'*'+C+'='+C*D
+		      	+'</td>')
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')	
+		   }
+
+		   if(C%2===0){
+		   document.write('<tr bgcolor="yellow">')
+		     for(var D=1;D<=C;D++){
+		      document.write('<td align="center">'+D+'*'+C+'='+C*D
+		      	+'</td>')
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')	
+		   }
+
+		}
+		document.write('</table>')
+	// // 九九乘法表+隔列换色
+		document.write('<table border="1px" cellspacing="0" cellpadding="15px" width="80%" align="center">')
+		   for(var E=1;E<=9;E++){
+		   document.write('<tr>')
+		     for(var F=1;F<=E;F++){
+		     	if(F%2===1){
+		           document.write('<td align="center" bgcolor="blue">'+F+'*'+E+'='+E*F+'</td>')
+		     	}
+		     	if(F%2===0){
+		           document.write('<td align="center" bgcolor="green">'+F+'*'+E+'='+E*F+'</td>')
+		     	}
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')
+		   }
+		document.write('</table>')
+
+	// // 九九乘法表+综合换色
+		document.write('<table border="1px" cellspacing="0" cellpadding="15px" width="80%" align="center">')
+		for(var G=1;G<=9;G++){
+		   if(G%2===1){
+		   document.write('<tr bgcolor="red">')
+		     for(var H=1;H<=G;H++){
+		     	if(H%2===1){
+		           document.write('<td align="center" bgcolor="blue">'+H+'*'+G+'='+G*H+'</td>')
+		     	}
+		     	if(H%2===0){
+		           document.write('<td align="center">'+H+'*'+G+'='+G*H+'</td>')
+		     	}
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')	
+		   }
+
+		   if(G%2===0){
+		   document.write('<tr bgcolor="yellow">')
+		     for(var H=1;H<=G;H++){
+		     	if(H%2===1){
+		           document.write('<td align="center">'+H+'*'+G+'='+G*H+'</td>')
+		     	}
+		     	if(H%2===0){
+		           document.write('<td align="center" bgcolor="green">'+H+'*'+G+'='+G*H+'</td>')
+		     	}
+		     }
+		   document.write('</tr>')
+		   document.write('<br />')	
+		   }
+
+		}
+		document.write('</table>')
+
+//九九乘法表 方法二：
+		var table="<table>";
+		for(var K=1;K<=9;K++){
+			var color;
+			if(K%2===0){
+               color= 'red';
+			}
+			else{
+               color= 'blue';
+			}
+			table+= '<table border="1px" cellspacing="0" cellpadding="15px" ><tr  bgcolor='+color+'>';
+			  for(var L=1;L<=K;L++){
+			  	table+='<td>'+K+'-'+L+'</td>';
+              }
+            table+= "</tr></table>";	  
+		}
+        document.write(table);
+
+
+
+	// 金字塔-1
+		var row=5;
+		for(var i=1;i<=row;i++){
+			for(var j=1;j<=row-i;j++){
+				document.write('&nbsp');
+			}
+			for(var j=1;j<=2*i-1;j++){
+				document.write('*');
+			}
+        document.write('<br />');
+		}
+
+	// 金字塔-2
+		var w=5;
+		for(var a=1;a<=w;a++){
+			for(var b=1;b<=a;b++){
+				document.write('*');
+			}
+        document.write('<br />');
+		}
+	// 1 1 2 3 5 8 13 21......根据前面数字的规律来写出100以内的数字
+	   var c=0,d=1,e=1;
+	   for(;e<=100;){
+	   	 document.write(e+'&nbsp');
+	   	 e=c+d;
+	   	 c=d;
+	   	 d=e;
+	   }
+        
+
+	</script>
+</body>
+</html>

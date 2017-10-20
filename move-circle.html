@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>create</title>
+</head>
+<style>
+body{
+	background: #000;
+}
+	.pointer{
+		width: 1px;
+		height: 1px;
+		border-radius: 50%;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+
+	}
+	.box1{
+		width: 30px;
+		height: 30px;
+		background: #008ed0;
+		border-radius: 50%;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+        /* transition: all ease 0.5s; */
+	}
+/* 
+	.circle{
+		width: 50px;
+		height: 50px;
+		background: #008ed0;
+		border: 10px solid blue;
+		border-radius: 50%;
+		position: absolute;
+		left: 50%;
+		top: 100%;
+		transition: all ease 0.5s;
+	} */
+</style>
+<body>
+	<div class="pointer"></div>
+	<script>
+	window.onload = function(){
+        // function sj(n){
+        // 	setInterval(function(){
+        //     for(let i=0;i<n;i++){
+        //     	let divs = document.createElement('div');
+        //     	divs.className='circle';
+        //     	//位置随机
+        //     	let lefts = Math.floor((innerWidth-50)*Math.random());
+        //     	let tops = Math.floor((innerHeight-50)*Math.random());
+        //     	// divs.style.left=`${lefts}px`;
+        //     	// divs.style.top=`${tops}px`;
+        //     	// 颜色随机
+        //     	divs.style.background=color();
+        //     	divs.style.border=color();
+        //     	//大小随机
+            	// let aaa = Math.round(Math.random()*50);
+            	// divs.style.height=aaa+'px';
+            	// divs.style.width=aaa+'px';
+                
+        //         setTimeout(function(){
+        //         	divs.style.transitionDelay='20ms';
+	       //      	divs.style.left=`${lefts}px`;
+	       //      	divs.style.top=`${tops}px`;
+        //         },5)
+        //     	document.body.appendChild(divs);
+        //     }
+        //   },500)
+        // }
+        // sj(5);
+   
+
+        function color(){
+        	let ar=[]
+        	for(let i=0;i<3;i++){
+        		ar.push(Math.round(Math.random()*255))
+        	}
+            let str1=ar.join();
+            str='rgb('+str1+')';
+            return str;
+        }    
+        
+
+        let pointer=document.querySelector('.pointer');
+        function circle(r,n){
+        	// setInterval(function(){
+				let deg=360/30;
+				for(let i=0;i<n;i++){
+				    
+				    if(i%30==0){
+				    	r=r+50;
+				    }
+					
+					let du=i*deg*Math.PI/180;
+					let box1=document.createElement('div');
+					let lefts=r*Math.cos(du);
+					let tops=r*Math.sin(du);
+					box1.className='box1';
+                    box1.style.background=color();
+	            	// let aaa = Math.round(Math.random()*100);
+	            	// box1.style.height=aaa+'px';
+	            	// box1.style.width=aaa+'px';
+				setInterval(function(){
+					box1.style.transitionDelay=i*100+'ms';	
+					box1.style.left=`${lefts}px`;
+					box1.style.top=`${tops}px`;
+				 },100)	
+					pointer.appendChild(box1)
+				 
+				}
+				
+            // },1000)
+        }
+			circle(100,90);
+
+}
+	</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>画布标签  </title>
+</head>
+<style>
+	.box{
+		width: 600px;
+		height: 600px;
+		border:1px solid red;
+		position: relative;
+	}
+	.xp{
+		width: 40px;
+		height: 40px;
+		background: #008ed0;
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	.zz{
+		width: 600px;
+		height: 600px;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+</style>
+<body>
+<!-- h5新加标签 -->
+ <!-- 默认 width="300" height="150"    当用css设置宽高时会对画布及内容进行放大或缩小-->
+<div class="box">
+	<canvas width="600" height="600">	
+	</canvas>
+	<div class="xp"></div>
+	<div class="zz"></div>
+</div>
+</body>
+</html>
+<script>
+	window.onload=function(){
+		let canvas=document.querySelector('canvas');
+		let ctx=canvas.getContext("2d");
+		// 画矩形
+		// // 四个参数  前两个为空间位置  后两个为矩形的宽高
+		// ctx.fillStyle='red';   ////可调填充型矩形颜色；必须放在'画矩形'之前
+		// ctx.fillRect(0, 0, 200, 50);  ////填充型 矩形
+		
+		// ctx.strokeStyle='blue';   ////可调描边型矩形颜色；必须放在'画矩形'之前
+		// ctx.strokeRect(200,100,50,50) /////描边型 矩形
+        
+  //       ctx.clearRect(10, 10, 180, 30);////////擦除的矩形（从"填充型"可看出）
+
+
+
+        // // 画不规则形状
+        // //思路：要明确开始路径； 移动并画图;闭合路径;画图---填充、描边
+        // ctx.beginPath();     ///////开始路径
+        // ctx.moveTo(50,50);  ///////////起点.
+        // ctx.lineTo(50, 150);///////////经过的点
+        // ctx.lineTo(150, 150);///////////经过的点
+        // ctx.lineTo(50, 50);///////////经过的点
+        // ctx.closePath(); ///////闭合路径
+        // ctx.fill()
+       
+
+
+
+      // 画圆
+      ctx.beginPath();
+      ctx.arc(300, 300, 300, 0,Math.PI*2)
+      ctx.strokeStyle='#008ed0';
+      ctx.stroke()
+      ctx.closePath();
+     
+      ctx.beginPath();
+      ctx.arc(200, 200, 25, 0,Math.PI*2)
+      ctx.stroke()
+      ctx.closePath();
+      
+      ctx.beginPath();
+      ctx.arc(212, 212, 10, 0,Math.PI*2)
+     ctx.fill()
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(400, 200, 25, 0,Math.PI*2)
+      ctx.stroke()
+     ctx.closePath();
+     
+      ctx.beginPath();
+      ctx.arc(412, 212, 10, 0,Math.PI*2)
+      ctx.fill()
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(300, 300, 200,Math.PI*1/8,Math.PI*11/16,false)
+      ctx.stroke()
+      ctx.closePath();
+
+        ctx.beginPath();
+        ctx.moveTo(300,265);
+        ctx.lineTo(280, 305);
+        ctx.lineTo(320, 305);
+        ctx.lineTo(300, 265);
+        ctx.closePath();
+        ctx.fillStyle='red';
+        ctx.fill()
+	
+
+
+
+ let xp=document.querySelector('.xp');
+ let zz=document.querySelector('.zz');
+		let xpw=parseInt(getComputedStyle(xp,null).width);
+		let xph=parseInt(getComputedStyle(xp,null).height);
+		let zzw=parseInt(getComputedStyle(zz,null).width);
+		let zzh=parseInt(getComputedStyle(zz,null).height);
+
+   zz.onmousedown=function(e){
+   	    // let cx=e.offsetX,cy=e.offsetY;
+   	    	xp.style.display='block';
+   	    zz.onmousemove=function(el){
+   	    	let ox=el.offsetX-20, oy=el.offsetY-20;
+			if(ox>=zzw-xpw){
+				ox=zzw-xpw;
+			}
+			if(ox<=0){
+				ox=0;
+			}
+			if(oy>=zzh-xph){
+				oy=zzh-xph;
+			}
+			if(oy<=0){
+				oy=0;
+			}
+            xp.style.left=`${ox}px`;
+            xp.style.top=`${oy}px`;
+            ctx.clearRect(ox,oy, 40, 40)
+
+
+   	    }
+   	    zz.onmouseup=function(){
+           xp.style.display='none';
+   	    }
+   }
+
+
+
+
+
+
+
+
+
+
+
+	}
+</script>

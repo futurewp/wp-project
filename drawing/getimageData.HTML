@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+	canvas{
+		border: 1px dashed #008ed0;
+	}
+</style>
+<body>
+	<canvas width="600" height="600"></canvas>		
+</body>
+</html>
+<script>
+	
+	window.onload=function(){
+		let canvas=document.querySelector('canvas');
+		let ctx=canvas.getContext("2d");
+
+         function aaa1(cx,cy,r,n){
+         	let rad=Math.PI/n;
+         	ctx.beginPath();
+         	ctx.moveTo(cx+r, cy)        
+         	for(let i=0;i<2*n;i++){
+         		let r1= i%2==0 ? r : r/2;
+         		let x=cx+r1*Math.cos(rad*i);
+         		let y=cy+r1*Math.sin(rad*i);
+                ctx.lineTo(x, y);
+            }
+             ctx.closePath();
+             ctx.stroke()
+        }
+       aaa1(300,300,200,360)
+
+////////////获取画布某一指定区域的像素数据
+       let data=ctx.getImageData(0, 0, 300 ,300);
+       ctx.clearRect(0, 0, 300 ,300);
+////////////将画布的像素数据放入某一指定区域
+       ctx.putImageData(data,0,0);
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+</script>

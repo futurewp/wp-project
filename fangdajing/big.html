@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大0925--2</title>
+	<script src="window.onload.js"></script>
+	<style>
+        .small,.big{
+        	width: 300px;
+        	height: 400px;
+        	float: left;
+            margin-right: 20px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            position: relative;
+        }
+        .small>img{
+        	width: 100%;
+        	height: 100%;
+        }
+        .big>img{
+        	position: absolute;
+        	left: 0px;
+        	top: 0;
+        }
+        .zhezhao{
+        	width: 300px;
+        	height: 400px;
+        	position: absolute;
+        	left: 0;
+        	top: 0;
+        	z-index: 300;
+        }
+        .zhezhao1{
+        	width: 30px;
+        	height: 40px;
+        	background: rgba(250,222, 231, 0.4);
+        	position: absolute;
+        	left: 0;
+        	top: 0;
+           
+        }
+    </style>
+</head>
+<body>
+	<div class="small">
+	     <img src="b1.jpg" alt="">
+	     <div class="zhezhao"></div>
+	     <div class="zhezhao1"></div>
+	</div>
+	<div class="big"><img src="b1.jpg" alt=""></div>
+</body>
+</html>
+
+<script>
+	$(function(){
+		let small=$('.small')[0];
+		let zh=$('.zhezhao')[0];
+		let szh=$('.zhezhao1')[0];
+		let big=$('.big')[0];
+		let bImg=$('img',big)[0];
+        
+		let szhw=parseInt(getComputedStyle(szh,null).width);
+		let szhh=parseInt(getComputedStyle(szh,null).height);
+		// console.log(szhh)		
+		let bigw=parseInt(getComputedStyle(big,null).width);
+		let bigh=parseInt(getComputedStyle(big,null).height);
+		let smallw=parseInt(getComputedStyle(small,null).width);
+		let smallh=parseInt(getComputedStyle(small,null).height);
+		// console.log(smallh)	
+		zh.onmousemove=function(element){
+			let ox=element.offsetX-szhw/2,oy=element.offsetY-szhh/2;
+			console.log(oy)
+			if(ox>=smallw-szhw){
+				ox=smallw-szhw;
+			}
+			if(ox<=0){
+				ox=0;
+			}
+			if(oy>=smallh-szhh){
+				oy=smallh-szhh;
+			}
+			if(oy<=0){
+				oy=0;
+			}
+			szh.style.left=ox+'px'
+			szh.style.top=oy+'px'
+
+ // console.log(bigh*smallh/szhh)
+			bImg.style.width=`${bigw*smallw/szhw}px`
+			bImg.style.hight=`${bigh*smallh/szhh}px`
+
+			bImg.style.left=`${-smallw*ox/szhw}px`
+			bImg.style.top=`${-smallh*oy/szhh}px`
+		}
+	})
+</script>

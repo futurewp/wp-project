@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>倒计时</title>
+</head>
+<body>
+	<span></span>天
+	<span></span>时
+	<span></span>分
+	<span></span>秒
+</body>
+</html>
+<script>
+///////////无参数时是程序运行时的时间;
+	let date= new Date(); 
+///        参数为字符串时可以设置时间 区别：有格式要求 
+	let date1= new Date('14:24:00 2017/10/1'); 
+///        参数为number时可以设置时间 区别：无格式要求 设置月份要减一
+	let date2= new Date(2017,10,1,14,0); 
+   
+	// console.log(date.getFullYear())
+	// console.log(date.getMonth()+1)
+	// console.log(date.getDate())//号
+	// console.log(date.getDay())//周
+	// console.log(date.getHours())
+	// console.log(date.getTime())
+	date.setFullYear(2018)  //设置年份 2018
+	date.setMonth(9)  //设置月份  10  （9=10-1）
+	date.setDate(1)//////号可以设置，但是周几不能设置
+	date.setHours(12)   ///设置小时  12
+console.log(date)  ////Mon Oct 01 2018 12:42:06 GMT+0800 (中国标准时间)......
+// 倒计时
+let spans=document.querySelectorAll('span');
+fn();
+setInterval(fn,1000);
+
+function fn(){
+	let arr=[];
+	let now=new Date();
+	let zq=new Date('00:00:00 2017/10/4');
+
+	let cha = Math.floor((zq.getTime()-now.getTime())/1000);
+	console.log(cha)
+	let day=Math.floor(cha/(60*60*24))
+	arr.push(day)
+	cha=cha%(60*60*24);
+	let Hours=Math.floor(cha/(60*60));
+	arr.push(Hours)
+	cha=cha%(60*60);
+	let min=Math.floor(cha/60)
+	arr.push(min)
+	let sec=cha%60	
+	arr.push(sec)
+arr.forEach((element,index)=>{
+  spans[index].innerText=element;
+})
+
+
+}
+
+</script>

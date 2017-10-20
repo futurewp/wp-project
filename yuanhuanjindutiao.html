@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+    canvas{
+    	border: 1px dashed #008ed0;
+    }
+
+</style>
+<body>
+	<canvas width="600" height="600"></canvas>
+</body>
+</html>
+<script>
+	window.onload=function(){
+		let canvas=document.querySelector('canvas');
+		let ctx=canvas.getContext("2d");
+
+        let i=1;
+        /////////// setInterval
+        // let time=setInterval(fn, 5)   
+        // function fn(){
+        //     i++;
+        //     if(i>=80){
+        //         clearTimeout(time);
+        //     }
+        /////////////递归函数  用setTimeout代替 setInterval
+            // let time=setTimeout(fn, 5)   
+            fn()
+            function fn(){
+                i++;
+                if(i>=80){
+                    // clearTimeout(time);
+                }
+                else{
+                    // time=setTimeout(fn, 5)
+                    requestAnimationFrame(fn);
+                }
+           
+        	
+
+
+
+
+            ctx.beginPath();
+            ctx.setLineDash([5,3]);
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+        	ctx.arc(300, 300, 200, -Math.PI/2,(Math.PI*2*i)/100-Math.PI/2);
+        	ctx.strokeStyle='#ff6700';
+            ////设置线的端点样式 参数有三 1.round圆   2.square方的 3.butt 默认无
+            ctx.lineCap='round'
+            ////设置线的宽度
+        	ctx.lineWidth=10;
+        	ctx.stroke();
+
+            ctx.font='bold 50px sans-serif';
+            ctx.textAlign='center'
+            ctx.lineWidth=2;
+        	ctx.strokeText(`${i}%`,300,300);
+        	
+        }
+
+          // requestAnimationFrame(fn); ////与setTimeout 相同，只是不用设置时间，他的刷新时间与电脑刷新频率时间相同
+          // cancelAnimationFrame(fn);停止requestAnimationFrame(fn);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////设置线的端点样式 参数有三 1.round圆   2.square方的 3.butt 默认无
+// ctx.lineCap='round'
+////设置线的宽度
+// ctx.lineWidth=10;
+///设置线拐角的样式 参数有3  1.bevel平角  2.miter 默认尖角 3.round圆角
+// ctx.lineJoin='bevel'
+// 设置拐角处内角到外部最大距离（必须是miter 才能用）
+// ctx.miterLimit=3
+        
+/////////////////虚线
+          // ctx.beginPath();
+          // // ctx.setLineDash([5,3]);  //5---虚线的长度   3----虚线的宽度
+          // ctx.moveTo(20, 20);
+          // ctx.lineTo(20, 80);
+          // ctx.stroke();
+///////////////文字
+          // ctx.font='bold 50px sans-serif';
+          // // 文字水平方向上的对齐方式居中 center  靠左：left  靠右：right    三种对其方式是相对于（300,300）而言
+          // ctx.textAlign='center'
+          //  // 文字垂直方向上的对齐方式
+          // ctx.textBaseLine='middle'
+          // ctx.fillText('hello', 300, 300)
+          // ctx.strokeText('hello', 300, 400)
+
+
+
+
+
+
+
+
+
+    }
+</script>

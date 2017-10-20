@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>留言板</title>
+	<style>
+	   *{
+	   	margin: 0;
+	   	padding: 0;
+	   	list-style: none;
+	   }
+       .box{
+       	width: 800px;
+       	background: #000;
+       	margin: 20px auto;
+       	padding: 10px;
+       }
+       .word{
+       	display: block;
+       	width: 800px;
+       	height: 50px;
+       	border-bottom:1px solid #ccc;
+       	font-size: 28px;
+       	color: #305E67;
+       	text-align: center;
+       	line-height: 50px;
+       }
+       .word1{
+       	display: block;
+       	width: 800px;
+       	font-size: 14px;
+       	color:#A7A7A7;
+       	border-bottom:1px solid #ccc;
+       	line-height: 30px;
+       	margin-bottom: 6px;
+       }
+       .box1{
+       	width: 798px;
+       	height: 28px;
+       	background: #ddd;
+       }
+       #box2{
+        width: 800px;
+        height: 30px;
+        background: #fff;
+        padding: 6px 10px;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 1px 2px 3px inset;
+        outline: none;
+        resize: none;
+       }
+       #box6{
+       	width: 798px;
+       	height: 178px;
+       	background: #fff;
+       	border: 1px solid #ddd;
+        padding: 6px 10px;
+        box-sizing: border-box;
+        box-shadow: 0 1px 3px 0px inset;
+        outline: none;
+        resize: none;
+       }
+       #box7{
+       	margin-bottom: 15px;
+        
+       }
+       .numbox{
+        position: relative;
+       }
+       .numbox>.num{
+         position: absolute;
+         right: 10px;
+         bottom: 10px;
+         font-size: 12px;
+         color: #ccc;
+       }
+       .numbox>.num>span{
+        font-size: 14px;
+        color: #008ed0;
+       }
+       #box7>button{
+        width: 48px;
+  	    height: 19px;
+  	    background: #1E4047;
+  	    border: 1px solid #1F444C;
+  	    padding: 1px 6px;
+  	    padding-bottom: 2px;
+  	    font-size: 12px;
+  	    color: #FFFFFF;
+  	    text-align: center;
+       }
+       .box4{
+       	width: 800px;
+       	height: 30px;
+       	border-bottom:1px solid #ccc;
+       	margin-bottom: 6px;
+       }
+       .word3{
+       	line-height: 30px;
+       	font-size: 14px;
+       	color:#A7A7A7;
+       }
+       .box5{
+         width: 800px;
+         font-size: 12px;
+         color: #666666;
+       }
+       .box5>li{
+        position: relative;
+        min-height: 100px;
+        box-sizing: border-box;
+        border-bottom:1px solid #ccc; 
+        padding: 6px; 
+       }
+       .box5>li>img{
+        position: absolute;
+        display: block;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        margin: 10px;
+       }
+       .box5>li>.middle{
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin-left: 100px;
+       }
+       .box5>li>.middle{
+        line-height: 35px;
+       }
+	</style>
+</head>
+<body>
+	<div class="box">
+		<b class="word">留言板</b>
+		<span class="word1">请留下您的足迹</span>
+    <input type="text" id="box2" name="username" placeholder="请输入您的用户名" value="">
+		<span class="word1">发表您的留言</span>
+    <div class="numbox">
+  		<div class="box1"></div>
+  		<textarea name="" id="box6" cols="50" rows="10" value="" placeholder="请输入您的留言" maxlength="200"></textarea>
+      <div class="num">您已输入<span id="num">0</span>个字，剩余<span id="rest">200</span>个字</div>
+    </div>
+  	<div id="box7">
+			<button>发表</button>
+			<button>重置</button>
+		</div>
+		<div class="box4">
+			<span class="word3">留言</span>
+		</div>
+    <ul class="box5"></ul>
+	</div>
+</body>
+</html>
+<script>
+window.onload = function(){ 
+      let username=document.getElementById("box2");
+      let num=document.getElementById("num");
+      let rest=document.getElementById("rest");
+    	let boxT = document.getElementById("box6");
+      let btnF = document.getElementById("box7");
+      let btn = btnF.getElementsByTagName('button');
+    	let boxU = document.getElementsByClassName('box5')[0]; 
+      boxT.onkeyup=function(){
+        let val=this.value;
+        num.innerText=val.length;
+        rest.innerText=this.maxLength-val.length;
+      } 
+      boxT.onkeydown=function(e){
+         if(e.keyCode==13){
+            FN();
+         } 
+      }  
+      username.onkeydown=function(e){
+         if(e.keyCode==13){
+            FN();
+         } 
+      }
+      btn[1].onclick =function(){
+        boxT.value=''
+        num.innerText=0;
+        rest.innerText=boxT.maxLength;
+      }
+    	btn[0].onclick = function(){ 
+          FN();
+      }  
+      function FN(){ 
+            let first=boxU.firstElementChild;
+            let oneli=document.createElement('li');
+            if(username.value!=='' && boxT.value!==''){ 
+               oneli.innerHTML +=`
+                    <img src="h1.jpg" alt="">
+                    <div class="middle">
+                      <h3>${username.value}</h3>
+                      <p>${boxT.value}</p>
+                    </div>
+               `
+               if(first){
+                 boxU.insertBefore(oneli,first);
+               }else{
+                 boxU.appendChild(oneli)
+               }
+                username.value ='';
+                boxT.value='';
+                num.innerText=0;
+                rest.innerText=boxT.maxLength;
+                }else if(username.value ==''){
+                  alert('请输入您的用户名')
+                }
+                else if(boxT.value ==''){
+                  alert('请输入您的留言')
+                }
+      }  
+
+
+      boxU.onmouseover=function(e){
+        let element=e.target
+        if(element.nodeName =='LI'){
+          element.onmouseover=function(e){
+            if(e){
+              element.style.background='#ccc';
+            }
+          } 
+        }
+      } 
+       boxU.onmouseout=function(e){
+        let element=e.target
+        if(element.nodeName =='LI'){
+          element.onmouseout=function(e){
+            if(e){
+              element.style.background='#000';
+            }
+          } 
+        }
+      } 
+}
+</script>

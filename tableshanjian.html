@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表格删减</title>
+	<style>
+	main{
+	  width: 600px;
+	  height: auto;
+	  margin: 20px auto;
+	  border: 1px solid #dfdfdf;
+	  box-shadow: 0 1px 3px -5px rgba(0, 0, 0, 0.4) inset;
+	  border-radius: 5px;
+	  padding: 10px 20px;
+	  overflow: hidden;
+	}
+	main > h3{
+      text-align: center;
+      line-height: 40px;
+      font-weight: normal;
+      font-size: 18px;
+	}
+	table{
+		border-collapse: collapse;
+		width: 100%;
+		height: auto;
+		text-align: center;
+	}
+	tr:nth-of-type(2n){
+        background: #ccc
+	}
+	tr:nth-of-type(2n+1){
+        background: 
+	}
+	td{
+		padding: 5px 0;
+	}
+	th{ 
+		font-weight: normal;
+		padding: 2px 0;
+	}
+	button{
+		padding: 10px 15px;
+		border: none;
+		background: #0ba2e6;
+		color: #ffffff;
+        border-radius: 5px;
+	}
+	button.add{
+		float: right;
+		margin-right: 30px;
+	}
+	</style>
+
+</head>
+<body>
+<main>
+	<h3>班级</h3>
+	<table>
+		<tr>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>年龄</th>
+			<th>籍贯</th>
+			<th>联系方式</th>
+			<th>操作</th>
+		</tr>
+		<tr>
+			<td>李四</td>
+			<td>男</td>
+			<td>20</td>
+			<td>山西运城</td>
+			<td>165465465</td>
+			<td class="btn">
+				<button class="sc">删除</button>
+			</td>
+		</tr>
+
+		<tr>
+			<td>王武</td>
+			<td>男</td>
+			<td>20</td>
+			<td>山西运城</td>
+			<td>165465465</td>
+			<td class="btn">
+				<button class="sc">删除</button>
+			</td>
+		</tr>
+
+		<tr>
+			<td>张三</td>
+			<td>男</td>
+			<td>20</td>
+			<td>山西运城</td>
+			<td>165465465</td>
+			<td class="btn">
+				<button class="sc">删除</button>
+			</td>
+		</tr>
+	</table>
+	<button class="add">添加</button>
+
+</main>	
+</body>
+</html>
+<script>
+	window.onload=function(){
+		let table=document.querySelector('tbody');
+		// 本地数据库----对象、二维数组模拟数据库等方法都可以
+		// let students=[
+  //           {name:'张三',age:20,sex:'男',phone:'451342334',address:'山西运城'},
+  //           {name:'张四',age:22,sex:'女',phone:'451342334',address:'山西大同'},
+  //           {name:'王安',age:23,sex:'男',phone:'451342334',address:'山西晋中'},
+  //           {name:'杜甫',age:18,sex:'男',phone:'451342334',address:'山西临汾'},
+  //           {name:'李白',age:16,sex:'女',phone:'451342334',address:'山西长治'},
+  //           {name:'杜宇',age:26,sex:'男',phone:'451342334',address:'山西侯马'},
+  //           {name:'张浦',age:36,sex:'女',phone:'451342334',address:'山西翼城'},
+		// ]
+		let Sobj = new students();
+		Sobj.getData();
+		console.log(Sobj.getData())
+		Sobj.forEach(element=>{
+            createTr(element);
+		})
+		function createTr(obj,i){
+		    let trs=document.createElement('tr');
+		    trs.id=i;
+		    table.appendChild(trs);
+		    trs.innerHTML=`
+		    	<td type="name">${obj.name}</td>
+		    	<td type="sex">${obj.sex}</td>
+		    	<td type="age">${obj.age}</td>
+		    	<td type="address">${obj.address}</td>
+		    	<td type="phone">${obj.phone}</td>
+		    	<td class="btn">
+		    		<button class="sc">删除</button>
+		    	</td>
+		    `
+		}
+		//单元格td:   保存对应内容 td清空 input(内容)--->td
+		//更新：  保存input--new    删除input   new-->td
+		
+		console.log(table)
+		table.ondblclick=function(e){           //双击
+			let element=e.target;
+	        if(element.nodeName =='TD' && element.className !== 'btn'){
+	        	let oldv=element.innerText;
+	        	element.innerText='';
+	        	let inputs= document.createElement('input');
+	            inputs.value=oldv;
+	            element.appendChild(inputs);
+	            inputs.onblur=function(){          //去焦
+                     let newldv=this.value.trim();
+                     element.removeChild(inputs);
+		            if(!newldv){
+		            	newldv=oldv;
+		            }
+		            element.innerText=newldv;
+                    //本地数据库数据修改
+		            let row=element.parentNode.id;
+		            let type=element.getAttribute('type')
+		            Sobj.upData(row,type,newldv); /////////////
+	            }
+
+	        }else if(element.nodeName=='BUTTON'){
+	        	let papa=element.parentNode.parentNode;
+	        	table.removeChild(papa);
+	        }
+		}
+		let add=document.querySelector('.add');
+		console.log(add)
+		let i=0;
+		add.ondblclick=function(){
+			i++;
+			if(i<students.length){
+				i=0;
+			}
+			createTr(students[i]);
+
+		}
+	}
+</script>
