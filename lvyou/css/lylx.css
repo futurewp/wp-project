@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-10-03 17:36:28
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-10-20 09:22:33
+* @Last Modified time: 2017-10-22 21:36:02
 */
 header{
 	width: 100%;
@@ -130,10 +130,16 @@ header{
 	width: 375px;
 	height: 330px;
 	padding: 20px 10px;
+	transition: all .5s ease;
+}
+.tu2>li:hover{
+    box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
 }
 .tu2>li>.tu2-img{
 	width: 375px;
 	height: 246px;
+	cursor: pointer;
 }
 .tu2>li>p>a{
 	display: block;
@@ -166,6 +172,51 @@ header{
 	margin: 10px;
 	box-sizing: border-box;
     position: relative;
+}
+.biankuang_1{
+	position: absolute;
+	z-index: 100;
+	top: 0px;
+	left:0px;
+	border-left: 3px solid #EB5858;
+}
+.biankuang_2 {
+	position: absolute;
+	z-index: 100;
+	bottom:-3px;
+	left: 0px;
+	border-top: 3px solid #EB5858;
+}
+.biankuang_3{
+	position: absolute;
+	z-index: 100;
+	bottom:0px;
+	right:0px;
+	border-right: 3px solid #EB5858;
+
+}
+.biankuang_4{
+	position: absolute;
+	z-index: 100;
+	top:-3px;
+	right:0px;
+	border-bottom: 3px solid #EB5858;
+}
+.tu2-zz{
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 50;
+	width: 0px;
+	height: 200px;
+	background: rgba(0, 0, 0, 0.6);
+	font-size: 30px;
+	color: #fff;
+	line-height: 200px;
+	text-align: center;
+	opacity:0;
+	overflow: hidden;
+	cursor: pointer;
 }
 .pian>li>.pian-img{
     width: 240px;

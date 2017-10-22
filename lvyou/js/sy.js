@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-10-03 17:36:58
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-10-20 01:19:35
+* @Last Modified time: 2017-10-22 21:19:36
 */
 window.onload=function(){
 	let bannerBox=document.querySelector('.banner-list');
@@ -160,4 +160,55 @@ console.log(smimg)
             
 
         $(document).mousedown(false); 
+
+
+            let pian=$('.pian>li'); 
+            for(let i=0;i<lis.length;i++){
+            // tuli.each(function(i){
+                pian[i].onmouseover=function(){
+                    $(this).find('.biankuang_1').stop(true).animate({
+                        height:'200px'
+                    },300)
+                    $(this).find('.biankuang_2').stop(true).delay(300).animate({
+                        width:'547px'
+                    },300)
+                    $(this).find('.biankuang_3').stop(true).animate({
+                        height:'200px'
+                    },300)
+                    $(this).find('.biankuang_4').stop(true).delay(300).animate({
+                        width:'547px'
+                    },300)
+                    $(this).find('.tu2-zz').stop(true).animate({width:'547px',opacity:1});
+                }
+                pian[i].onmouseout=function(){
+                    $(this).find('.biankuang_1').stop(true).delay(100).animate({
+                        height:'0px'
+                    },100)
+                    $(this).find('.biankuang_2').stop(true).animate({
+                        width:'0px'
+                    },100)
+                    $(this).find('.biankuang_3').stop(true).delay(100).animate({
+                        height:'0px'
+                    },100)
+                    $(this).find('.biankuang_4').stop(true).animate({
+                        width:'0px'
+                    },100)
+                    $(this).find('.tu2-zz').stop(true).animate({width:'0',opacity:0});
+                }
+            // })
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

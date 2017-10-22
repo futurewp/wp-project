@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-10-03 17:36:28
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-10-20 09:31:41
+* @Last Modified time: 2017-10-22 21:49:07
 */
 header{
 	width: 100%;
@@ -151,7 +151,7 @@ header{
 }
 
 .lcjs{
-	width: 1200px;
+	width: 1240px;
 	height: 565px;
 	margin: 10px auto;
 	display: flex;
@@ -159,12 +159,21 @@ header{
 }
 .lcjs>li{
 	width: 278px;
-	height: 555px;
+	height: 420px;
 	margin: 5px;
+    /* cursor: pointer; */
+	padding: 5px;
+	margin-bottom: 135px;
+	transition: all .5s ease;
+}
+.lcjs>li:hover{
+    box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
 }
 .lcjs>li>.lcjs-img{
 	width: 278px;
 	height: 162px;
+	cursor: pointer;
 }
 .lcjs>li>.lcjs-word{
 	width: 278px;

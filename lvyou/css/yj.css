@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-10-03 17:36:28
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-10-20 09:28:58
+* @Last Modified time: 2017-10-22 20:12:50
 */
 header{
 	width: 100%;
@@ -143,13 +143,16 @@ header{
 	position: absolute;
 	top: 0;
 	left: 0;
-	opacity: 0;
+	display: none;
 }
 .yj-tu>li{
 	width: 245px;
 	height: 324px;
 	margin-bottom: 30px;
-	border: 1px solid #ccc;
+	position: relative;
+	float: left;
+	margin-left: 50px;
+	border: 1px solid #ccc;	
 }
 .yj-tu>li>.yi-tu-img>a{
 	display: block;
@@ -224,6 +227,31 @@ img{
 }
 .yj-btn>span:nth-child(2){
     color: rgb(255, 58, 58);
+}
+.biankuang_1{
+	position: absolute;
+	top: 0px;
+	left:0px;
+	border-left: 3px solid #EB5858;
+}
+.biankuang_2 {
+	position: absolute;
+	bottom:-3px;
+	left: 0px;
+	border-top: 3px solid #EB5858;
+}
+.biankuang_3{
+	position: absolute;
+	bottom:0px;
+	right:0px;
+	border-right: 3px solid #EB5858;
+
+}
+.biankuang_4{
+	position: absolute;
+	top:-3px;
+	right:0px;
+	border-bottom: 3px solid #EB5858;
 }
 /* 尾部 */
 .jw{
