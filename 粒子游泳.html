@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+}
+canvas {
+    background-color: #000;
+}
+.info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    background-color: rgba(200, 200, 200, .8);
+    font-size: 80%;
+}
+form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: rgba(200, 200, 200, .8);
+    padding: 8px;
+    font-size: 80%;
+}
+form input[type=text] {
+    width: 30px;
+    border: 1px solid #000;
+    text-align: center;
+}
+form button {
+    margin: 4px auto;
+    border: 1px solid #000;
+    display: block;
+}
+</style>
+<body>
+<form id="settings" onsubmit="return false">
+    Swimmers
+    <br/>
+    <input type="text" id="inNumMin" value="100" /> To
+    <input type="text" id="inNumMax" value="100" />
+    <br/> Size
+
+    <br/>
+    <input type="text" id="inSizeMin" value="5" /> To
+    <input type="text" id="inSizeMax" value="8" />
+    <br/> Speed
+
+    <br/>
+    <input type="text" id="inSpeedMin" value="1" /> To
+    <input type="text" id="inSpeedMax" value="6" />
+    <br/> Stroke Frequency
+    <br/>
+    <input type="text" id="inStrokeMin" value="10" /> To
+    <input type="text" id="inStrokeMax" value="20" />
+    <br/> Stroke Depth
+    <br/>
+    <input type="text" id="inCurveMin" value="-2" /> To
+    <input type="text" id="inCurveMax" value="2" />
+    <br/> Mouse Pull Damp.
+    <br/>
+    <input type="text" id="inPullMin" value="100" /> To
+    <input type="text" id="inPullMax" value="300" />
+    <br/>
+
+    <button id="btnClear">Clear</button>
+    <button id="btnSet">Set!</button>
+    <br/> Presets:
+    <button id="preset1">Flock</button>
+    <button id="preset2">Sparkler</button>
+    <button id="preset0">Default</button>
+</form>
+</body>
+</html>
+<script>
+// Create Canvas.
+var canvas = document.createElement('canvas');
+var ctx = canvas.getContext('2d');
+var colors = [
+    'rgba(69,204,255,.35)',
+    'rgba(73,232,62,.35)',
+    'rgba(255,212,50,.35)',
+    'rgba(232,75,48,.35)',
+    'rgba(178,67,255,.35)'
+];
+var colors = [
+    'rgba(235,233,177,.35)',
+    'rgba(193,153,28,.35)',
+    'rgba(135,118,33,.35)',
+    'rgba(34,68,85,.35)',
+    'rgba(143,54,61,.35)'
+];
+
+// Configure settings options
+var config = {};
+var particles = [];
+var settings = document.getElementById('settings');
+initSettings();
+// Fire the set! button.
+settings.btnSet.onclick();
+
+var mousePos = [200, 200];
+
+// Init.
+resize();
+// Attach canvas.
+document.body.appendChild(canvas);
+// Begin drawing.
+window.requestAnimationFrame(draw);
+// Sync canvas to window.
+window.onresize = resize;
+
+
+
+document.onmousemove = function(e) {
+    mousePos = [e.clientX, e.clientY];
+}
+document.onclick = function(e) {
+    for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        var a = e.clientX - p.pos[0];
+        var b = e.clientY - p.pos[1];
+        //p.angle = (angleFromVector(a,b)+180)%360;
+    }
+}
+start();
+
+
+function start() {
+    var swimmers = rand(config.num[0], config.num[1]);
+    for (var i = 0; i < swimmers; i++) {
+        particles.push(new Particle({
+            pos: [rand(0, canvas.width), rand(0, canvas.height)],
+            size: rand(config.size[0], config.size[1]),
+            speed: rand(config.speed[0], config.speed[1]),
+            curve: rand(config.curve[0], config.curve[1]),
+            color: colors[i % 5],
+            strokeSpeed: Math.floor(rand(config.stroke[0], config.stroke[1])),
+            pull: rand(config.pull[0], config.pull[1])
+        }));
+    }
+}
+
+
+function Particle(options) {
+    this.angle = 0;
+    this.newAngle = this.angle;
+    this.curve = 0;
+    this.pos = [0, 0];
+    this.size = 4;
+    this.speed = 1;
+    this.speedMultiplier = 1;
+    this.color = 'rgba(255,64,64,.95)';
+    this.waveX = false;
+    this.waveY = false;
+    this.index = 0;
+    this.type = '';
+    this.collision = false;
+    this.collidesWith = [];
+    this.tick = 0;
+    this.strokeSpeed = 10;
+    this.pull = 200;
+
+    // Override defaults.
+    for (var i in options) {
+        this[i] = options[i];
+    }
+
+    this.move = function() {
+        if (this.collision) {
+            this.detectCollision();
+        }
+        this.angle += this.curve;
+        if (!(this.tick % this.strokeSpeed)) {
+            this.angle = this.newAngle;
+        }
+        var radians = this.angle * Math.PI / 180;
+        this.pos[0] += Math.cos(radians) * this.speed * (this.speedMultiplier / this.pull),
+            this.pos[1] += Math.sin(radians) * this.speed * (this.speedMultiplier / this.pull);
+
+        if (this.waveX) {
+            this.pos[0] += Math.cos(this.index);
+        }
+        if (this.waveY) {
+            this.pos[1] += Math.sin(this.index);
+        }
+        this.tick++;
+
+    }
+    this.detectCollision = () => {
+        for (var i = 0; i < particles.length; i++) {
+            var hit = particles[i];
+            if (!this.collidesWith.includes(hit.type) || hit == this) {
+                continue;
+            }
+
+            if (hit.pos[0] > this.pos[0] - this.size && hit.pos[0] < this.pos[0] + this.size &&
+                hit.pos[1] > this.pos[1] - this.size && hit.pos[1] < this.pos[1] + this.size) {
+                this.collisionCallback(this, hit);
+            }
+        }
+    }
+    this.draw = function(ctx) {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.fillRect(this.pos[0] - this.size / 2, this.pos[1], this.size, this.size);
+        ctx.stroke();
+    }
+}
+
+// Drawing.
+// TODO: This should be part of a Particle Engine system.
+function draw() {
+    fade();
+    //clear();
+    for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+
+        // Garbage Collection.
+        /*
+        if (p.pos[0] < 0 || p.pos[0] > canvas.width || p.pos[1] < 0 || p.pos[1] > canvas.height) {
+          particles.splice(i,1);
+          delete p;
+          continue;
+        }
+        */
+
+
+        var a = mousePos[0] - p.pos[0];
+        var b = mousePos[1] - p.pos[1];
+
+        p.newAngle = angleFromVector(a, b);
+        p.speedMultiplier = 1 + (Math.abs(a) + Math.abs(b));
+        //console.log(a+b,canvas.width+canvas.height);
+        p.move();
+        p.draw(ctx);
+
+    }
+
+    window.requestAnimationFrame(draw);
+}
+
+function clear() {
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fill();
+    particles.length = 0;
+}
+
+function fade() {
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(0, 0, 0, .3)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fill();
+}
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+
+/* Common functions */
+function angleFromVector(x, y) {
+    // SOHCAHTOA!
+    var a = Math.atan(y / x) * 180 / Math.PI;
+    if (x < 0 && y < 0) {
+        return a + 180;
+    }
+    // If only one axis is negative, so will be the angle, thus an extra
+    // 90deg is added. (90+90, 270+90);
+    else if (x < 0) {
+        return a + 180;
+    } else if (y < 0) {
+        return a + 360;
+    }
+    return a;
+}
+
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function randColor(min, max) {
+    var r = Math.floor(rand(min, max)),
+        g = Math.floor(rand(min, max)),
+        b = Math.floor(rand(min, max));
+    return 'rgba(' + r + ',' + g + ',' + b + ',1)';
+}
+
+
+
+// Settings.
+
+function initSettings() {
+    settings.btnSet.onclick = function() {
+        config.num = [
+            parseFloat(settings.inNumMin.value),
+            parseFloat(settings.inNumMax.value)
+        ];
+        config.size = [
+            parseFloat(settings.inSizeMin.value),
+            parseFloat(settings.inSizeMax.value)
+        ];
+        config.speed = [
+            parseFloat(settings.inSpeedMin.value),
+            parseFloat(settings.inSpeedMax.value)
+        ];
+        config.curve = [
+            parseFloat(settings.inCurveMin.value),
+            parseFloat(settings.inCurveMax.value)
+        ];
+        config.stroke = [
+            parseFloat(settings.inStrokeMin.value),
+            parseFloat(settings.inStrokeMax.value)
+        ];
+        config.pull = [
+            parseFloat(settings.inPullMin.value),
+            parseFloat(settings.inPullMax.value)
+        ];
+
+        clear();
+        start();
+    }
+
+    // Configure clear button
+    settings.btnClear.onclick = clear;
+
+    // Presets.
+    settings.preset0.onclick = function() {
+        preset({
+            inNumMin: 100,
+            inNumMax: 100,
+            inSizeMin: 5,
+            inSizeMax: 8,
+            inSpeedMin: 1,
+            inSpeedMax: 6,
+            inStrokeMin: 10,
+            inStrokeMax: 20,
+            inCurveMin: -2,
+            inCurveMax: 2,
+            inPullMin: 100,
+            inPullMax: 300
+        });
+    };
+    settings.preset1.onclick = function() {
+        preset({
+            inNumMin: 1000,
+            inNumMax: 1000,
+            inSizeMin: 6,
+            inSizeMax: 6,
+            inSpeedMin: 5,
+            inSpeedMax: 5,
+            inStrokeMin: 10,
+            inStrokeMax: 20,
+            inCurveMin: -2,
+            inCurveMax: 2,
+            inPullMin: 50,
+            inPullMax: 50
+        });
+    };
+    settings.preset2.onclick = function() {
+        preset({
+            inNumMin: 200,
+            inNumMax: 200,
+            inSizeMin: 8,
+            inSizeMax: 8,
+            inSpeedMin: 1,
+            inSpeedMax: 6,
+            inStrokeMin: 10,
+            inStrokeMax: 20,
+            inCurveMin: -5,
+            inCurveMax: 5,
+            inPullMin: 10,
+            inPullMax: 10
+        });
+    };
+}
+
+function preset(options) {
+    for (var i in options) {
+        if (settings[i].type == 'checkbox') {
+            settings[i].checked = options[i];
+            continue;
+        }
+        settings[i].value = options[i];
+    }
+    clear();
+    settings.btnSet.onclick();
+}
+</script>
